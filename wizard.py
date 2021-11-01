@@ -644,7 +644,7 @@ class OutputScheme(object):
         self.extensions = ext
         self.items = [
             {
-                'caption': "  NLOC  ", 'value': "nloc",
+                'caption': "  NLOCc ", 'value': "nloc",
                 'avg_caption': ' Avg.NLOC '},
             {
                 'caption': "  CCN  ", 'value': "cyclomatic_complexity",
@@ -741,8 +741,8 @@ def print_warnings(option, scheme, warnings):
             k, val) for k, val in option.thresholds.items()))
     for warning in warnings:
         if warning_count == 0:
-            print("\n" + "=" * len(warn_str) + "\n" + warn_str)
-            print(scheme.function_info_head())
+            print("\n" + "=" * len(warn_str) + "\n" + warn_str.strip(), end='')
+            print(scheme.function_info_head().replace('NLOCc', 'NLOCw').replace('=', '').strip(' ').replace('\n\n', '\n'))
         warning_count += 1
         warning_nloc += warning.nloc
         print(scheme.function_info(warning))
@@ -805,9 +805,9 @@ def print_and_save_modules(all_fileinfos, scheme):
                     print(scheme.function_info(fun))
                 except UnicodeEncodeError:
                     print("Found ill-formatted unicode function name.")
-    print("%d file analyzed." % (len(saved_fileinfos)))
+    print("FILE_COUNT:(%d) files analyzed." % (len(saved_fileinfos)))
     print("==============================================================")
-    print("NLOC   " + scheme.average_captions() + " function_cnt    file")
+    print("NLOCf   " + scheme.average_captions() + " function_cnt    file")
     print("--------------------------------------------------------------")
     for module_info in saved_fileinfos:
         print((
