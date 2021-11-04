@@ -1,10 +1,12 @@
 #! /usr/bin/env python3
 # pylint: disable=invalid-name,line-too-long
 """Visit folder tree report mime-type statistics."""
+import collections
 import copy
 import csv
 import datetime as dti
 import hashlib
+import json
 import lzma
 import os
 import pathlib
@@ -97,6 +99,11 @@ def db_timestamp(timestamp=None):
     return dti.datetime.now().strftime(TS_FORMAT_DB)
 
 
+def spider_tree(base_path):
+    """Visit all elements in the folders below base path and yeld count."""
+    return sum(1 for _ in pathlib.Path(base_path).rglob('**/*'))
+
+
 def walk_files(base_path):
     """Visit the files in the folders below base path in sorted order."""
     for file_path in sorted(base_path.rglob('**/*')):
@@ -126,6 +133,34 @@ def elf_hash(some_bytes: bytes):
     return h
 
 
+def hash_file(path_string):
+    """Yield hashes of implicit algorithm of path."""
+    path = pathlib.Path(path_string)
+    if not path.is_file():
+        raise IOError("path is no file for hashing.")
+
+    value = hashlib.sha256()
+    with open(path, "rb") as in_file:
+        for byte_block in iter(lambda in_f=in_file: in_f.read(BUFFER_BYTES), b""):
+            value.update(byte_block)
+
+    return value.hexdigest()
+
+
+def count_lines(path_string):
+    """Yield number of newline chars (\\n) of path."""
+    path = pathlib.Path(path_string)
+    if not path.is_file():
+        raise IOError("path is no file for line count.")
+
+    value = 0
+    with open(path, "rb") as in_file:
+        for byte_block in iter(lambda in_f=in_file: in_f.read(BUFFER_BYTES), b""):
+            value += byte_block.count(b'\n')
+
+    return value
+
+
 def hashes(path_string, algorithms=None):
     """Yield hashes per algorithms of path."""
     if algorithms is None:
@@ -153,7 +188,7 @@ def file_metrics(file_path):
 
 
 def mime_type(file_path):
-    """Either yield mime type from find command without file name in result or artichoke/growth"""
+    """Either yield mime type from find command without file name in result or arti/choke"""
     find_type = ["file", "--mime", file_path]
     try:
         output = subprocess.check_output(find_type, stderr=subprocess.STDOUT).decode()
@@ -161,13 +196,13 @@ def mime_type(file_path):
             return output.strip().split(":", 1)[1].strip()
     except subprocess.CalledProcessError:
         pass  # for now
-    return 'artichoke/growth'
+    return 'arti/choke'
 
 
-def serialize(storage_hash, f_stat, fps, file_type):
+def serialize(storage_hash, line_count, f_stat, fps, file_type):
     """x"""  # TODO(sthagen) round trip has become a mess - fix it
     size_bytes, c_time, m_time = f_stat.st_size, f_stat.st_ctime, f_stat.st_mtime
-    return f"{','.join((storage_hash, str(size_bytes), str(c_time), str(m_time), fps, file_type))}\n"
+    return f"{','.join((storage_hash, str(line_count), str(size_bytes), str(c_time), str(m_time), fps, file_type))}\n"
 
 
 def gen_out_stream(kind):
@@ -183,37 +218,62 @@ def derive_fingerprints(algorithms, file_path):
 
 
 def visit_store(at, hash_policy, algorithms, enter, proxy, update):
-    found_bytes, total = 0, 0
+    """Here we walk the tree and dispatch."""
+    mime_types = collections.Counter()
+    mime_sizes, mime_lines = {}, {}
+    found_bytes, public, private, non_file = 0, 0, 0, 0
     for file_path in walk_files(pathlib.Path(at)):
-        print(f'TRACE:: analyzing {file_path} stream member')
-        total += 1
-        storage_hash = file_path.name
-        if not file_path.is_file():
+        if file_path.name.startswith('.') or '/.' in str(file_path):
+            private += 1
             continue
-        if not possible_hash(storage_hash, hash_policy):
-            print(f'TRACE:: {file_path} not a CAS member')
-        if storage_hash not in proxy:
-            fps = derive_fingerprints(algorithms, file_path)
-            f_stat = file_metrics(file_path)
+        public += 1
+        storage_name = str(file_path)
+        if not file_path.is_file():
+            non_file += 1
+            continue
+        storage_hash = hash_file(file_path)
+        f_stat = file_metrics(file_path)
+        mt = mime_type(file_path)
+        line_count = None
+        if mt.startswith('text/'):
+            line_count = count_lines(file_path)
+            if mt not in mime_lines:
+                mime_lines[mt] = 0
+            mime_lines[mt] += line_count
+
+        mime_types.update([mt])
+        if mt not in mime_sizes:
+            mime_sizes[mt] = 0
+        mime_sizes[mt] += f_stat.st_size
+
+        if storage_name not in proxy:
             found_bytes += f_stat.st_size
-            enter[storage_hash] = (storage_hash, str(f_stat.st_size), str(f_stat.st_ctime), str(f_stat.st_mtime), fps, mime_type(file_path))
+            enter[storage_name] = (
+                storage_name, 
+                str(line_count),
+                str(f_stat.st_size), 
+                str(f_stat.st_ctime), 
+                str(f_stat.st_mtime), 
+                f'sha256:{storage_hash}', 
+                mt
+            )
         else:
-            update.add(storage_hash)
-    return found_bytes, total
+            update.add(storage_name)
+    return found_bytes, public, private, non_file, mime_types, mime_sizes, mime_lines
 
 
 def distribute_changes(enter, leave, keep, proxy, update):
     entered_bytes, ignored_bytes, updated_bytes, left_bytes = 0, 0, 0, 0
     for k, v in proxy.items():
         if k in update:
-            ignored_bytes += int(v[1])
+            ignored_bytes += int(v[2])
             keep[k] = copy.deepcopy(v)
         else:
-            left_bytes += int(v[1])
+            left_bytes += int(v[2])
             leave[k] = copy.deepcopy(v)
     updated_bytes += ignored_bytes
     for k, v in enter.items():
-        entered_bytes += int(v[1])
+        entered_bytes += int(v[2])
         keep[k] = copy.deepcopy(v)
     updated_bytes += entered_bytes
     return entered_bytes, ignored_bytes, left_bytes, updated_bytes
@@ -247,10 +307,11 @@ def main(argv=None):
         proxy = {}
         print(f"Initializing proxy databases below {STORE_ROOT} as no path given per {PROXY_DB} or load failed")
 
+
     previous = len(proxy)
     enter, update, leave = {}, set(), {}
-    at = tree_root
-    print(f"Read {previous} from {proxy_db} artifacts below {at}", file=sys.stderr)
+    at_or_below = tree_root
+    print(f"Read {previous} from {proxy_db} artifacts below {at_or_below}", file=sys.stderr)
 
     algorithms = None
     if hash_policy != HASH_POLICY:
@@ -261,16 +322,27 @@ def main(argv=None):
 
     start_ts = dti.datetime.now()
 
+    print(f"Job spidering file store starts at {naive_timestamp(start_ts)}", file=sys.stderr)
+    stream_size = spider_tree(at_or_below)
     print(f"Job visiting file store starts at {naive_timestamp(start_ts)}", file=sys.stderr)
-    found_bytes, total = visit_store(at, hash_policy, algorithms, enter, proxy, update)
-
+    found_bytes, public, private, non_file, mt_c, mt_s, mt_l = visit_store(at_or_below, hash_policy, algorithms, enter, proxy, update)
+    
     keep = {}
     entered_bytes, ignored_bytes, left_bytes, updated_bytes = distribute_changes(enter, leave, keep, proxy, update)
 
     added_db, gone_db, proxy_db = derive_proxy_paths(start_ts)
 
+    with open(pathlib.Path(STORE_ROOT, 'mime-counts.json'), 'wt', encoding=ENCODING) as handle:
+        json.dump(dict(mt_c), handle, indent=2, sort_keys=True)
+
+    with open(pathlib.Path(STORE_ROOT, 'mime-sizes-bytes.json'), 'wt', encoding=ENCODING) as handle:
+        json.dump(mt_s, handle, indent=2, sort_keys=True)
+
+    with open(pathlib.Path(STORE_ROOT, 'mime-line-counts.json'), 'wt', encoding=ENCODING) as handle:
+        json.dump(mt_l, handle, indent=2, sort_keys=True)
+
     entered, updated, left = len(enter), len(keep), len(leave)
-    ignored = total-entered
+    ignored = public - entered
     for db, kind in ((added_db, enter), (proxy_db, keep), (gone_db, leave)):
         archive(gen_out_stream(kind), db)
 
@@ -279,10 +351,12 @@ def main(argv=None):
     print(f"Kept {updated} entries / {updated_bytes} bytes at {proxy_db}", file=sys.stderr)
     print(f"Removed {left} entries / {left_bytes} bytes at {gone_db}", file=sys.stderr)
     print(f"Total size in added files is {found_bytes/GIGA:.2f} Gigabytes ({found_bytes} bytes)", file=sys.stderr)
+    print(f'Stream had {stream_size} elements') 
+    print(f'Skipped {private} private and considered {public} public elements')
+    print(f'From the {public} public elements {non_file} were non-files')
     print(f"Job visiting file store finished at {naive_timestamp()}", file=sys.stderr)
     return 0
 
 
 if __name__ == "__main__":
     sys.exit(main(sys.argv[1:]))
-
