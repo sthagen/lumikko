@@ -234,12 +234,15 @@ def visit_store(at, hash_policy, algorithms, enter, proxy, update):
         storage_hash = hash_file(file_path)
         f_stat = file_metrics(file_path)
         mt = mime_type(file_path)
+        mime, charset = '', ''
+        if ';'in mt:
+            mime, charset = mt.split(';', 1)
         line_count = None
-        if mt.startswith('text/'):
+        if mime.startswith('text/') or mime.endswith('xml') or mime.endswith('script'):
             line_count = count_lines(file_path)
-            if mt not in mime_lines:
-                mime_lines[mt] = 0
-            mime_lines[mt] += line_count
+            if mime not in mime_lines:
+                mime_lines[mime] = 0
+            mime_lines[mime] += line_count
 
         mime_types.update([mt])
         if mt not in mime_sizes:
