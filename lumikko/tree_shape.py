@@ -306,7 +306,7 @@ def process(tree_root):
         proxy = load(proxy_db_path)
     except FileNotFoundError:
         proxy = {}
-        print(f"Initializing proxy databases below {STORE_ROOT} as no path given per {PROXY_DB} or load failed")
+        print(f"Warning: Initializing proxy databases below {STORE_ROOT} as no path given per {PROXY_DB} or load failed")
 
     previous = len(proxy)
     enter, update, leave = {}, set(), {}
