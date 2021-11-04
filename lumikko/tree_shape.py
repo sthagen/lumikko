@@ -292,17 +292,16 @@ def derive_proxy_paths(start_ts):
     return added_db, gone_db, proxy_db
 
 
-def main(argv=None):
+def process(tree_root):
     """Drive the tree visitor."""
-    argv = argv if argv else sys.argv[1:]
-    if len(argv) != 1:
-        print("ERROR tree root argument expected.", file=sys.stderr)
-        return 2
-    tree_root = argv[0].strip()
 
     hash_policy = HASH_POLICY
     proxy_db = os.getenv(PROXY_DB, "")
     proxy_db_path = proxy_db if proxy_db else STORE_PATH_PROXY
+    report = {
+        'proxy_db_path': str(proxy_db_path),
+        'store_root': str(STORE_ROOT),
+    }
     print(f'Derived {proxy_db_path=} from {proxy_db=}')
     try:
         proxy = load(proxy_db_path)
@@ -310,10 +309,11 @@ def main(argv=None):
         proxy = {}
         print(f"Initializing proxy databases below {STORE_ROOT} as no path given per {PROXY_DB} or load failed")
 
-
     previous = len(proxy)
     enter, update, leave = {}, set(), {}
     at_or_below = tree_root
+    report['previous'] = str(previous)
+    report['at_or_below'] = str(at_or_below)
     print(f"Read {previous} from {proxy_db} artifacts below {at_or_below}", file=sys.stderr)
 
     algorithms = None
@@ -324,10 +324,13 @@ def main(argv=None):
         print(f"Warning: Store seems to not use ({HASH_POLICY}) - using ({HASH_POLICY})")
 
     start_ts = dti.datetime.now()
-
-    print(f"Job spidering file store starts at {naive_timestamp(start_ts)}", file=sys.stderr)
+    some_ts = naive_timestamp(start_ts)
+    report['spider_start'] = some_ts
+    print(f"Job spidering file store starts at {some_ts}", file=sys.stderr)
     stream_size = spider_tree(at_or_below)
-    print(f"Job visiting file store starts at {naive_timestamp(start_ts)}", file=sys.stderr)
+    some_ts = naive_timestamp()
+    report['visitor_start'] = some_ts
+    print(f"Job visiting file store starts at {some_ts}", file=sys.stderr)
     found_bytes, public, private, non_file, mt_c, mt_s, mt_l = visit_store(at_or_below, hash_policy, algorithms, enter, proxy, update)
     
     keep = {}
@@ -335,19 +338,42 @@ def main(argv=None):
 
     added_db, gone_db, proxy_db = derive_proxy_paths(start_ts)
 
-    with open(pathlib.Path(STORE_ROOT, 'mime-counts.json'), 'wt', encoding=ENCODING) as handle:
+    report['mime_file_counter'] = str(pathlib.Path(STORE_ROOT, 'mime-counts.json'))
+    report['mime_size_bytes'] = str(pathlib.Path(STORE_ROOT, 'mime-sizes-bytes.json'))
+    report['mime_line_counts'] = str(pathlib.Path(STORE_ROOT, 'mime-line-counts.json'))
+
+    with open(report['mime_file_counter'], 'wt', encoding=ENCODING) as handle:
         json.dump(dict(mt_c), handle, indent=2, sort_keys=True)
 
-    with open(pathlib.Path(STORE_ROOT, 'mime-sizes-bytes.json'), 'wt', encoding=ENCODING) as handle:
+    with open(report['mime_size_bytes'], 'wt', encoding=ENCODING) as handle:
         json.dump(mt_s, handle, indent=2, sort_keys=True)
 
-    with open(pathlib.Path(STORE_ROOT, 'mime-line-counts.json'), 'wt', encoding=ENCODING) as handle:
+    with open(report['mime_line_counts'], 'wt', encoding=ENCODING) as handle:
         json.dump(mt_l, handle, indent=2, sort_keys=True)
 
     entered, updated, left = len(enter), len(keep), len(leave)
     ignored = public - entered
     for db, kind in ((added_db, enter), (proxy_db, keep), (gone_db, leave)):
         archive(gen_out_stream(kind), db)
+
+    report['entered'] = entered
+    report['entered_bytes'] = entered_bytes
+    report['added_db'] = str(added_db)
+    report['ignored'] = ignored
+    report['ignored_bytes'] = ignored_bytes
+    report['updated'] = updated
+    report['updated_bytes'] = updated_bytes
+    report['proxy_db'] = str(proxy_db)
+    report['left'] = left
+    report['left_bytes'] = left_bytes
+    report['gone_db'] = str(gone_db)
+    report['found_bytes'] = found_bytes
+    report['stream_size'] = stream_size
+    report['private'] = private
+    report['public'] = public
+    report['non_file'] = non_file
+    some_ts = naive_timestamp()
+    report['typer_stop'] = some_ts
 
     print(f"Entered {entered} entries / {entered_bytes} bytes at {added_db} ", file=sys.stderr)
     print(f"Ignored {ignored} entries / {ignored_bytes} bytes for hashing", file=sys.stderr)
@@ -357,8 +383,21 @@ def main(argv=None):
     print(f'Stream had {stream_size} elements') 
     print(f'Skipped {private} private and considered {public} public elements')
     print(f'From the {public} public elements {non_file} were non-files')
-    print(f"Job visiting file store finished at {naive_timestamp()}", file=sys.stderr)
+    print(f"Job visiting file store finished at {report['typer_stop']}", file=sys.stderr)
+
+    with open(pathlib.Path('report.json'), 'wt', encoding=ENCODING) as handle:
+        json.dump(report, handle, indent=2, sort_keys=True)
     return 0
+
+
+def main(argv=None):
+    """LALALA."""
+    argv = argv if argv else sys.argv[1:]
+    if len(argv) != 1:
+        print("ERROR tree root argument expected.", file=sys.stderr)
+        return 2
+    tree_root = argv[0].strip()
+    return process(tree_root)
 
 
 if __name__ == "__main__":
