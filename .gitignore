@@ -133,5 +133,5 @@ dmypy.json
 .idea
 *.log
 local_publi.sh
-.lumillo-store/
+.lumikko-store/
 report.json
