@@ -302,7 +302,6 @@ def process(tree_root):
         'proxy_db_path': str(proxy_db_path),
         'store_root': str(STORE_ROOT),
     }
-    print(f'Derived {proxy_db_path=} from {proxy_db=}')
     try:
         proxy = load(proxy_db_path)
     except FileNotFoundError:
@@ -314,7 +313,6 @@ def process(tree_root):
     at_or_below = tree_root
     report['previous'] = str(previous)
     report['at_or_below'] = str(at_or_below)
-    print(f"Read {previous} from {proxy_db} artifacts below {at_or_below}", file=sys.stderr)
 
     algorithms = None
     if hash_policy != HASH_POLICY:
@@ -324,13 +322,9 @@ def process(tree_root):
         print(f"Warning: Store seems to not use ({HASH_POLICY}) - using ({HASH_POLICY})")
 
     start_ts = dti.datetime.now()
-    some_ts = naive_timestamp(start_ts)
-    report['spider_start'] = some_ts
-    print(f"Job spidering file store starts at {some_ts}", file=sys.stderr)
+    report['spider_start'] = naive_timestamp(start_ts)
     stream_size = spider_tree(at_or_below)
-    some_ts = naive_timestamp()
-    report['visitor_start'] = some_ts
-    print(f"Job visiting file store starts at {some_ts}", file=sys.stderr)
+    report['visitor_start'] = naive_timestamp()
     found_bytes, public, private, non_file, mt_c, mt_s, mt_l = visit_store(at_or_below, hash_policy, algorithms, enter, proxy, update)
     
     keep = {}
@@ -372,18 +366,7 @@ def process(tree_root):
     report['private'] = private
     report['public'] = public
     report['non_file'] = non_file
-    some_ts = naive_timestamp()
-    report['typer_stop'] = some_ts
-
-    print(f"Entered {entered} entries / {entered_bytes} bytes at {added_db} ", file=sys.stderr)
-    print(f"Ignored {ignored} entries / {ignored_bytes} bytes for hashing", file=sys.stderr)
-    print(f"Kept {updated} entries / {updated_bytes} bytes at {proxy_db}", file=sys.stderr)
-    print(f"Removed {left} entries / {left_bytes} bytes at {gone_db}", file=sys.stderr)
-    print(f"Total size in added files is {found_bytes/GIGA:.2f} Gigabytes ({found_bytes} bytes)", file=sys.stderr)
-    print(f'Stream had {stream_size} elements') 
-    print(f'Skipped {private} private and considered {public} public elements')
-    print(f'From the {public} public elements {non_file} were non-files')
-    print(f"Job visiting file store finished at {report['typer_stop']}", file=sys.stderr)
+    report['typer_stop'] = naive_timestamp()
 
     with open(pathlib.Path('report.json'), 'wt', encoding=ENCODING) as handle:
         json.dump(report, handle, indent=2, sort_keys=True)
