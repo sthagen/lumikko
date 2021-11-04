@@ -14,7 +14,7 @@ import subprocess
 import sys
 
 from git import Repo
-from git.exc import GitCommandError
+from git.exc import GitCommandError, InvalidGitRepositoryError
 
 ENCODING = "utf-8"
 ENCODING_ERRORS_POLICY = "ignore"
@@ -318,19 +318,22 @@ def process(tree_root):
 
     try:
         repo = Repo(at_or_below)
-    except GitCommandError as git_err:
+    except InvalidGitRepositoryError as git_err:
         print(f"Warning: Tree {at_or_below} is not under version control")
         repo = None
     branch_name = None
     revision = None
     revision_date = None
+    origin_url = None
     if repo:
         branch_name = repo.active_branch.name
         revision = repo.head.commit
         revision_date = naive_timestamp(dti.datetime.utcfromtimestamp(revision.committed_date))
+        origin_url = repo.remotes.origin.url
 
+    report['origin_url'] = origin_url
     report['branch_name'] = branch_name
-    report['revision_hash'] = str(revision)
+    report['revision_hash'] = str(revision) if revision else None
     report['revision_date'] = revision_date
     report['previous'] = str(previous)
     report['at_or_below'] = str(at_or_below)
