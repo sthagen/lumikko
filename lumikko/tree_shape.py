@@ -326,10 +326,17 @@ def process(tree_root):
     revision_date = None
     origin_url = None
     if repo:
+        try:
+            origin_url = repo.remotes.origin.url
+        except AttributeError:
+            print(f"Warning: Repository {at_or_below} has no remote")
+            pass
         branch_name = repo.active_branch.name
-        revision = repo.head.commit
-        revision_date = naive_timestamp(dti.datetime.utcfromtimestamp(revision.committed_date))
-        origin_url = repo.remotes.origin.url
+        try:
+            revision = repo.head.commit
+            revision_date = naive_timestamp(dti.datetime.utcfromtimestamp(revision.committed_date))
+        except ValueError:
+            pass
 
     report['origin_url'] = origin_url
     report['branch_name'] = branch_name
