@@ -29,7 +29,7 @@ TS_FORMAT_DB = "%Y%m%dT%H%M%SZ"
 GIGA = 2 << (30 - 1)
 BUFFER_BYTES = 2 << 15
 
-STORE_ROOT = ".lumikkoo-store"
+STORE_ROOT = ".lumikko-store"
 STORE_PATH_ENTER = pathlib.Path(STORE_ROOT, "enter")
 STORE_PATH_TOMBS = pathlib.Path(STORE_ROOT, "tombs")
 STORE_PATH_PROXY = pathlib.Path(STORE_ROOT, "proxy")
