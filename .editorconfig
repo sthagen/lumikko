@@ -54,3 +54,11 @@ indent_brace_style = BSD
 spaces_around_operators = true
 spaces_around_brackets = none
 max_line_length = 150
+
+[*.rs]
+end_of_line = lf
+charset = utf-8
+trim_trailing_whitespace = true
+indent_style = space
+indent_size = 4
+max_line_length = 120
