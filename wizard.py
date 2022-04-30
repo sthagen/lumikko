@@ -627,9 +627,7 @@ class OutputScheme(object):
     Each extension can define some additional data columns to
     the FunctionInfo structure, or even add properties to
     the FileInformation structure.
-
     In any extension class, define a class level variable:
-
         FUNCTION_INFO = {
             'column_name' : {
                 'caption': 'if defined, will show the column in result',
@@ -699,7 +697,7 @@ class OutputScheme(object):
 
     def function_info(self, fun):
         return ''.join(
-            str(getattr(fun, item['value'])).rjust(len(item['caption']))
+            str(getattr(fun, item['value'])).rjust(len(item['caption'])+3)
             for item in self.items if item['caption'])
 
     def average_captions(self):
@@ -710,7 +708,7 @@ class OutputScheme(object):
     def average_formatter(self):
         return "".join([
             "{{module.average_{ext[value]}:{size}.1f}}"
-            .format(ext=e, size=len(e['avg_caption']))
+            .format(ext=e, size=len(e['avg_caption'])+3)
             for e in self.items
             if e.get("avg_caption", None)])
 
@@ -783,10 +781,10 @@ def print_total(warning_count, warning_nloc, all_result, scheme):
           " cnt   Fun Rt   nloc Rt")
     print("-" * 90)
     print((
-        "{module.nloc:10d}" +
+        "{module.nloc:13d}" +
         scheme.average_formatter() +
-        "{function_count:9d}{warning_count:13d}" +
-        "{function_rate:10.2f}{nloc_rate:8.2f}").format(
+        "{function_count:12d}{warning_count:16d}" +
+        "{function_rate:13.2f}{nloc_rate:11.2f}").format(
                   module=all_result.as_fileinfo(),
                   function_count=all_result.function_count(),
                   warning_count=warning_count,
@@ -811,9 +809,9 @@ def print_and_save_modules(all_fileinfos, scheme):
     print("--------------------------------------------------------------")
     for module_info in saved_fileinfos:
         print((
-            "{module.nloc:7d}" +
+            "{module.nloc:10d}" +
             scheme.average_formatter() +
-            "{function_count:10d}" +
+            "{function_count:13d}" +
             "     {module.filename}").format(
             module=module_info,
             function_count=len(module_info.function_list)))
@@ -1020,7 +1018,6 @@ analyze_file = FileAnalyzer(get_extensions([]))  # pylint: disable=C0103
 
 def main(argv=None):
     """Command-line entrance to Lizard.
-
     Args:
         argv: Arguments vector; if None, sys.argv by default.
     """
