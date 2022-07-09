@@ -131,7 +131,7 @@ def elf_hash(some_bytes: bytes):
         h = (h << 4) + s
         high = h & 0xF0000000
         if high:
-            h ^= (high >> 24)
+            h ^= high >> 24
         h &= ~high
     return h
 
@@ -238,7 +238,7 @@ def visit_store(at, hash_policy, algorithms, enter, proxy, update):
         f_stat = file_metrics(file_path)
         mt = mime_type(file_path)
         mime, charset = '', ''
-        if ';'in mt:
+        if ';' in mt:
             mime, charset = mt.split(';', 1)
         line_count = None
         if mime.startswith('text/') or mime.endswith('xml') or mime.endswith('script'):
@@ -255,13 +255,13 @@ def visit_store(at, hash_policy, algorithms, enter, proxy, update):
         if storage_name not in proxy:
             found_bytes += f_stat.st_size
             enter[storage_name] = (
-                storage_name, 
+                storage_name,
                 str(line_count),
-                str(f_stat.st_size), 
-                str(f_stat.st_ctime), 
-                str(f_stat.st_mtime), 
-                f'sha256:{storage_hash}', 
-                mt
+                str(f_stat.st_size),
+                str(f_stat.st_ctime),
+                str(f_stat.st_mtime),
+                f'sha256:{storage_hash}',
+                mt,
             )
         else:
             update.add(storage_name)
@@ -310,7 +310,9 @@ def process(tree_root):
         proxy = load(proxy_db_path)
     except FileNotFoundError:
         proxy = {}
-        print(f"Warning: Initializing proxy databases below {STORE_ROOT} as no path given per {PROXY_DB} or load failed")
+        print(
+            f"Warning: Initializing proxy databases below {STORE_ROOT} as no path given per {PROXY_DB} or load failed"
+        )
 
     previous = len(proxy)
     enter, update, leave = {}, set(), {}
@@ -356,8 +358,10 @@ def process(tree_root):
     report['spider_start'] = naive_timestamp(start_ts)
     stream_size = spider_tree(at_or_below)
     report['visitor_start'] = naive_timestamp()
-    found_bytes, public, private, non_file, mt_c, mt_s, mt_l = visit_store(at_or_below, hash_policy, algorithms, enter, proxy, update)
-    
+    found_bytes, public, private, non_file, mt_c, mt_s, mt_l = visit_store(
+        at_or_below, hash_policy, algorithms, enter, proxy, update
+    )
+
     keep = {}
     entered_bytes, ignored_bytes, left_bytes, updated_bytes = distribute_changes(enter, leave, keep, proxy, update)
 
