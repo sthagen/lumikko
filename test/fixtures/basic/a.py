@@ -1,10 +1,12 @@
 """A"""
 A = 'a'
 
+
 def fa():
-  """fa"""
-  return A
+    """fa"""
+    return A
+
 
 def faa(f) -> str:
-  """faa"""
-  return f()
+    """faa"""
+    return f()
