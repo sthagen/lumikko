@@ -14,28 +14,28 @@ import subprocess
 import sys
 
 from git import Repo
-from git.exc import GitCommandError, InvalidGitRepositoryError
+from git.exc import InvalidGitRepositoryError
 
-ENCODING = "utf-8"
-ENCODING_ERRORS_POLICY = "ignore"
+ENCODING = 'utf-8'
+ENCODING_ERRORS_POLICY = 'ignore'
 
-HASH_POLICY = "sha256"
+HASH_POLICY = 'sha256'
 HASH_POLICIES_KNOWN = (HASH_POLICY,)
 
-PROXY_DB = "MIME_TYPES_PROXY_DB"
+PROXY_DB = 'MIME_TYPES_PROXY_DB'
 
-TS_FORMAT_HR = "%Y-%m-%d %H:%M:%S"
-TS_FORMAT_DB = "%Y%m%dT%H%M%SZ"
+TS_FORMAT_HR = '%Y-%m-%d %H:%M:%S'
+TS_FORMAT_DB = '%Y%m%dT%H%M%SZ'
 GIGA = 2 << (30 - 1)
 BUFFER_BYTES = 2 << 15
 
-STORE_ROOT = ".lumikko-store"
-STORE_PATH_ENTER = pathlib.Path(STORE_ROOT, "enter")
-STORE_PATH_TOMBS = pathlib.Path(STORE_ROOT, "tombs")
-STORE_PATH_PROXY = pathlib.Path(STORE_ROOT, "proxy")
+STORE_ROOT = '.lumikko-store'
+STORE_PATH_ENTER = pathlib.Path(STORE_ROOT, 'enter')
+STORE_PATH_TOMBS = pathlib.Path(STORE_ROOT, 'tombs')
+STORE_PATH_PROXY = pathlib.Path(STORE_ROOT, 'proxy')
 
-XZ_FILTERS = [{"id": lzma.FILTER_LZMA2, "preset": 7 | lzma.PRESET_EXTREME}]
-XZ_EXT = ".xz"
+XZ_FILTERS = [{'id': lzma.FILTER_LZMA2, 'preset': 7 | lzma.PRESET_EXTREME}]
+XZ_EXT = '.xz'
 
 
 def archive(stream, file_path):
@@ -43,7 +43,7 @@ def archive(stream, file_path):
     file_path = pathlib.Path(file_path)  # HACK A DID ACK
     if file_path.suffixes[-1] != XZ_EXT:
         file_path = file_path.with_suffix(file_path.suffix + XZ_EXT)
-    with lzma.open(file_path, "w", check=lzma.CHECK_SHA256, filters=XZ_FILTERS) as f:
+    with lzma.open(file_path, 'w', check=lzma.CHECK_SHA256, filters=XZ_FILTERS) as f:
         for entry in stream:
             f.write(entry.encode(encoding=ENCODING, errors=ENCODING_ERRORS_POLICY))
 
@@ -52,7 +52,7 @@ def load(proxy_db_path):
     """Load the proxy data as dict."""
     file_path = pathlib.Path(proxy_db_path)  # HACK A DID ACK
     if file_path.is_dir():
-        file_path = pathlib.Path(sorted(file_path.glob("*"))[-1])
+        file_path = pathlib.Path(sorted(file_path.glob('*'))[-1])
         print(f'Found latest proxy source as {file_path}')
     else:
         print(f'Recieved latest proxy source as {file_path}')
@@ -83,7 +83,7 @@ def possible_hash(text, hash_policy=HASH_POLICY):
     """Fast and shallow hash rep validity probe."""
     probe = {
         HASH_POLICY: 64,
-        "sha1": 40,
+        'sha1': 40,
     }
     return by_name(text, probe[hash_policy])
 
@@ -140,11 +140,11 @@ def hash_file(path_string):
     """Yield hashes of implicit algorithm of path."""
     path = pathlib.Path(path_string)
     if not path.is_file():
-        raise IOError("path is no file for hashing.")
+        raise IOError('path is no file for hashing.')
 
     value = hashlib.sha256()
-    with open(path, "rb") as in_file:
-        for byte_block in iter(lambda in_f=in_file: in_f.read(BUFFER_BYTES), b""):
+    with open(path, 'rb') as in_file:
+        for byte_block in iter(lambda in_f=in_file: in_f.read(BUFFER_BYTES), b''):
             value.update(byte_block)
 
     return value.hexdigest()
@@ -154,11 +154,11 @@ def count_lines(path_string):
     """Yield number of newline chars (\\n) of path."""
     path = pathlib.Path(path_string)
     if not path.is_file():
-        raise IOError("path is no file for line count.")
+        raise IOError('path is no file for line count.')
 
     value = 0
-    with open(path, "rb") as in_file:
-        for byte_block in iter(lambda in_f=in_file: in_f.read(BUFFER_BYTES), b""):
+    with open(path, 'rb') as in_file:
+        for byte_block in iter(lambda in_f=in_file: in_f.read(BUFFER_BYTES), b''):
             value += byte_block.count(b'\n')
 
     return value
@@ -170,15 +170,15 @@ def hashes(path_string, algorithms=None):
         algorithms = {HASH_POLICY: hashlib.sha256}
     for key in algorithms:
         if key not in HASH_POLICIES_KNOWN:
-            raise ValueError("hashes received unexpected algorithm key.")
+            raise ValueError('hashes received unexpected algorithm key.')
 
     path = pathlib.Path(path_string)
     if not path.is_file():
-        raise IOError("path is no file.")
+        raise IOError('path is no file.')
 
     accumulator = {k: f() for k, f in algorithms.items()}
-    with open(path, "rb") as in_file:
-        for byte_block in iter(lambda in_f=in_file: in_f.read(BUFFER_BYTES), b""):
+    with open(path, 'rb') as in_file:
+        for byte_block in iter(lambda in_f=in_file: in_f.read(BUFFER_BYTES), b''):
             for k in algorithms:
                 accumulator[k].update(byte_block)
 
@@ -192,11 +192,11 @@ def file_metrics(file_path):
 
 def mime_type(file_path):
     """Either yield mime type from find command without file name in result or arti/choke"""
-    find_type = ["file", "--mime", file_path]
+    find_type = ['file', '--mime', file_path]
     try:
         output = subprocess.check_output(find_type, stderr=subprocess.STDOUT).decode()
         if not output.strip().endswith('(No such file or directory)'):
-            return output.strip().split(":", 1)[1].strip()
+            return output.strip().split(':', 1)[1].strip()
     except subprocess.CalledProcessError:
         pass  # for now
     return 'arti/choke'
@@ -286,9 +286,9 @@ def distribute_changes(enter, leave, keep, proxy, update):
 
 
 def derive_proxy_paths(start_ts):
-    added_db = pathlib.Path(STORE_PATH_ENTER, f"added-{db_timestamp(start_ts)}.csv")
-    proxy_db = pathlib.Path(STORE_PATH_PROXY, f"proxy-{db_timestamp(start_ts)}.csv")
-    gone_db = pathlib.Path(STORE_PATH_TOMBS, f"gone-{db_timestamp(start_ts)}.csv")
+    added_db = pathlib.Path(STORE_PATH_ENTER, f'added-{db_timestamp(start_ts)}.csv')
+    proxy_db = pathlib.Path(STORE_PATH_PROXY, f'proxy-{db_timestamp(start_ts)}.csv')
+    gone_db = pathlib.Path(STORE_PATH_TOMBS, f'gone-{db_timestamp(start_ts)}.csv')
     pathlib.Path(STORE_PATH_ENTER).mkdir(parents=True, exist_ok=True)
     pathlib.Path(STORE_PATH_PROXY).mkdir(parents=True, exist_ok=True)
     pathlib.Path(STORE_PATH_TOMBS).mkdir(parents=True, exist_ok=True)
@@ -299,7 +299,7 @@ def process(tree_root):
     """Drive the tree visitor."""
 
     hash_policy = HASH_POLICY
-    proxy_db = os.getenv(PROXY_DB, "")
+    proxy_db = os.getenv(PROXY_DB, '')
     proxy_db_path = proxy_db if proxy_db else STORE_PATH_PROXY
     report = {
         'pwd': str(pathlib.Path.cwd()),
@@ -311,7 +311,7 @@ def process(tree_root):
     except FileNotFoundError:
         proxy = {}
         print(
-            f"Warning: Initializing proxy databases below {STORE_ROOT} as no path given per {PROXY_DB} or load failed"
+            f'Warning: Initializing proxy databases below {STORE_ROOT} as no path given per {PROXY_DB} or load failed'
         )
 
     previous = len(proxy)
@@ -320,8 +320,8 @@ def process(tree_root):
 
     try:
         repo = Repo(at_or_below)
-    except InvalidGitRepositoryError as git_err:
-        print(f"Warning: Tree {at_or_below} is not under version control")
+    except InvalidGitRepositoryError:
+        print(f'Warning: Tree {at_or_below} is not under version control')
         repo = None
     branch_name = None
     revision = None
@@ -331,7 +331,7 @@ def process(tree_root):
         try:
             origin_url = repo.remotes.origin.url
         except AttributeError:
-            print(f"Warning: Repository {at_or_below} has no remote")
+            print(f'Warning: Repository {at_or_below} has no remote')
             pass
         branch_name = repo.active_branch.name
         try:
@@ -352,7 +352,7 @@ def process(tree_root):
         algorithms = {
             HASH_POLICY: hashlib.sha256,
         }
-        print(f"Warning: Store seems to not use ({HASH_POLICY}) - using ({HASH_POLICY})")
+        print(f'Warning: Store seems to not use ({HASH_POLICY}) - using ({HASH_POLICY})')
 
     start_ts = dti.datetime.now()
     report['spider_start'] = naive_timestamp(start_ts)
@@ -412,11 +412,11 @@ def main(argv=None):
     """LALALA."""
     argv = argv if argv else sys.argv[1:]
     if len(argv) != 1:
-        print("ERROR tree root argument expected.", file=sys.stderr)
+        print('ERROR tree root argument expected.', file=sys.stderr)
         return 2
     tree_root = argv[0].strip()
     return process(tree_root)
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     sys.exit(main(sys.argv[1:]))
