@@ -6,4 +6,4 @@ For now a lumikko (Finnish for wiesel), later maybe feed back changes upstream t
 
 Experimental.
 
-**Note**: The default branch is `defalt`.
+**Note**: The default branch is `default`.
