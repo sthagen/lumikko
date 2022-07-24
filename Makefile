@@ -33,7 +33,7 @@ lint:
 
 .PHONY: mypy
 mypy:
-	mypy lumikko
+	@echo Skipping mypy lumikko
 
 .PHONY: test
 test: clean
