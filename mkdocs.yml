@@ -1,0 +1,60 @@
+site_name: Lumikko
+site_description: For now a lumikko (Finnish for wiesel), later maybe feed back changes upstream towards a lisko.
+
+theme:
+  name: 'material'
+  palette:
+    # Light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: blue grey
+      accent: indigo
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: Switch to dark mode
+
+    # Dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: black
+      accent: indigo
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to light mode
+
+extra:
+  generator: false
+  social:
+    - icon: fontawesome/brands/github
+      link: https://git.sr.ht/~sthagen/lumikko
+    - icon: fontawesome/brands/python
+      link: https://pypi.org/project/lumikko
+    - icon: fontawesome/brands/linkedin
+      link: https://www.linkedin.com/in/shage
+
+copyright: Copyright &copy; 2022 Stefan Hagen under the MIT license
+
+repo_name: ~sthagen/lumikko
+repo_url: https://git.sr.ht/~sthagen/lumikko
+edit_uri: ""
+
+plugins:
+  - search
+  - mkdocstrings
+
+nav:
+  - Introduction: 'index.md'
+  - Install: 'install.md'
+  - Usage: 'usage.md'
+  - API: 'api.md'
+  - Changes: 'changes.md'
+  - Test Coverage: https://codes.dilettant.life/coverage/lumikko/
+
+markdown_extensions:
+  - mkautodoc
+  - admonition
+  - pymdownx.highlight
+  - pymdownx.superfences
+
+extra_javascript:
+
