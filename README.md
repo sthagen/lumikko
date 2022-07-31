@@ -5,7 +5,7 @@ For now a lumikko (Finnish for wiesel), later maybe feed back changes upstream t
 [License: MIT](https://git.sr.ht/~sthagen/lumikko/tree/default/item/LICENSE)
 
 [![version](https://img.shields.io/pypi/v/lumikko.svg?style=flat)](https://pypi.python.org/pypi/lumikko/)
-[![downloads](https://img.shields.io/pypi/dm/lumikko.svg?style=flat)](https://pypi.python.org/pypi/lumikko/)
+[![downloads](https://pepy.tech/badge/lumikko/month)](https://pepy.tech/project/lumikko)
 [![wheel](https://img.shields.io/pypi/wheel/lumikko.svg?style=flat)](https://pypi.python.org/pypi/lumikko/)
 [![supported-versions](https://img.shields.io/pypi/pyversions/lumikko.svg?style=flat)](https://pypi.python.org/pypi/lumikko/)
 [![supported-implementations](https://img.shields.io/pypi/implementation/lumikko.svg?style=flat)](https://pypi.python.org/pypi/lumikko/)
