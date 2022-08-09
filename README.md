@@ -21,7 +21,7 @@ User and developer [documentation of lumikko](https://codes.dilettant.life/docs/
 
 ## Bug Tracker
 
-Feature requests and bug reports are bested entered in the [todos of lumikko](https://todo.sr.ht/~sthagen/lumikko).
+Feature requests and bug reports are best entered in the [todos of lumikko](https://todo.sr.ht/~sthagen/lumikko).
 ## Primary Source repository
 
 The primary source repository of [lumikko is at sourcehut](https://git.sr.ht/~sthagen/lumikko)
