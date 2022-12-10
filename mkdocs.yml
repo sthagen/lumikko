@@ -3,6 +3,8 @@ site_description: For now a lumikko (Finnish for wiesel), later maybe feed back 
 
 theme:
   name: 'material'
+  logo: assets/logo.png
+  favicon: images/favicon.ico
   features:
     - navigation.expand
     - toc.integrate
