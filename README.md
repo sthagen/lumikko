@@ -4,6 +4,8 @@ For now a lumikko (Finnish for wiesel), later maybe feed back changes upstream t
 
 [License: MIT](https://git.sr.ht/~sthagen/lumikko/tree/default/item/LICENSE)
 
+Third party dependencies are documented in the folder [third-party](third-party/README.md).
+
 [![version](https://img.shields.io/pypi/v/lumikko.svg?style=flat)](https://pypi.python.org/pypi/lumikko/)
 [![downloads](https://pepy.tech/badge/lumikko/month)](https://pepy.tech/project/lumikko)
 [![wheel](https://img.shields.io/pypi/wheel/lumikko.svg?style=flat)](https://pypi.python.org/pypi/lumikko/)
