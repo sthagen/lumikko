@@ -137,3 +137,4 @@ local_publi.sh
 report.json
 local_*
 .vscode/
+current-bandit.json
