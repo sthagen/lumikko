@@ -1,8 +1,8 @@
-SHELL = /bin/bash
-
 .DEFAULT_GOAL := all
-isort = isort lumikko test
 black = black -S -l 120 --target-version py39 lumikko test
+lint = ruff lumikko test
+pytest = pytest --asyncio-mode=strict --cov=lumikko --cov-report term-missing:skip-covered --cov-branch --log-format="%(levelname)s %(message)s"
+types = mypy lumikko
 
 .PHONY: install
 install:
@@ -16,7 +16,7 @@ install-all: install
 
 .PHONY: format
 format:
-	$(isort)
+	$(lint) --fix
 	$(black)
 
 .PHONY: init
@@ -27,17 +27,16 @@ init:
 .PHONY: lint
 lint:
 	python setup.py check -ms
-	flake8 lumikko/ test/
-	$(isort) --check-only --df
+	$(lint)
 	$(black) --check --diff
 
-.PHONY: mypy
-mypy:
-	@echo Skipping mypy lumikko
+.PHONY: types
+types:
+	$(types)
 
 .PHONY: test
 test: clean
-	pytest --asyncio-mode=strict --cov=lumikko --cov-report term-missing:skip-covered --cov-branch --log-format="%(levelname)s %(message)s"
+	$(pytest)
 
 .PHONY: testcov
 testcov: test
@@ -45,7 +44,26 @@ testcov: test
 	@coverage html
 
 .PHONY: all
-all: lint mypy testcov
+all: lint types testcov
+
+.PHONY: sbom
+sbom:
+	@./gen-sbom
+	@cog -I. -P -c -r --check --markers="[[fill ]]] [[[end]]]" -p "from gen_sbom import *;from gen_licenses import *" docs/third-party/README.md
+
+.PHONY: version
+version:
+	@cog -I. -P -c -r --check --markers="[[fill ]]] [[[end]]]" -p "from gen_version import *" lumikko/__init__.py
+
+.PHONY: secure
+secure:
+	@bandit --output current-bandit.json --baseline baseline-bandit.json --format json --recursive --quiet --exclude ./test,./build lumikko
+	@diff -Nu {baseline,current}-bandit.json; printf "^ Only the timestamps ^^ ^^ ^^ ^^ ^^ ^^ should differ. OK?\n"
+
+.PHONY: baseline
+baseline:
+	@bandit --output baseline-bandit.json --format json --recursive --quiet --exclude ./test,./build lumikko
+	@cat baseline-bandit.json; printf "\n^ The new baseline ^^ ^^ ^^ ^^ ^^ ^^. OK?\n"
 
 .PHONY: clean
 clean:
