@@ -1,0 +1,25 @@
+[
+    {
+        "key": "gitpython",
+        "package_name": "GitPython",
+        "installed_version": "3.1.29",
+        "required_version": "3.1.29",
+        "dependencies": [
+            {
+                "key": "gitdb",
+                "package_name": "gitdb",
+                "installed_version": "4.0.10",
+                "required_version": ">=4.0.1,<5",
+                "dependencies": [
+                    {
+                        "key": "smmap",
+                        "package_name": "smmap",
+                        "installed_version": "5.0.0",
+                        "required_version": ">=3.0.1,<6",
+                        "dependencies": []
+                    }
+                ]
+            }
+        ]
+    }
+]
