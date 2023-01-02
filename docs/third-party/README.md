@@ -1,8 +1,8 @@
 # Third Party Dependencies
 
 <!--[[[fill sbom_sha256()]]]-->
-The [SBOM in CycloneDX v1.4 JSON format](https://git.sr.ht/~sthagen/lumikko/blob/default/sbom.json) with SHA256 checksum ([68326537 ...](https://git.sr.ht/~sthagen/lumikko/blob/default/sbom.json.sha256 "sha256:68326537973807af9174100acc165c750fcbeb261dab4bed521fb73fb331de2c")).
-<!--[[[end]]] (checksum: bce74708c0ea09810513a96ef5d2a090)-->
+The [SBOM in CycloneDX v1.4 JSON format](https://git.sr.ht/~sthagen/lumikko/blob/default/sbom.json) with SHA256 checksum ([7c3b8e18 ...](https://git.sr.ht/~sthagen/lumikko/blob/default/sbom.json.sha256 "sha256:7c3b8e18fdd156adb1de0924643a4b1dbb0d6720cf7d1bfa52cefadec11a7ac3")).
+<!--[[[end]]] (checksum: 0698a63ea79c1a080080313bb5ff0f4e)-->
 ## Licenses 
 
 JSON files with complete license info of: [direct dependencies](direct-dependency-licenses.json) | [all dependencies](all-dependency-licenses.json)
@@ -12,8 +12,8 @@ JSON files with complete license info of: [direct dependencies](direct-dependenc
 <!--[[[fill direct_dependencies_table()]]]-->
 | Name                                                           | Version                                              | License     | Author                         | Description (from packaging data)                                    |
 |:---------------------------------------------------------------|:-----------------------------------------------------|:------------|:-------------------------------|:---------------------------------------------------------------------|
-| [GitPython](https://github.com/gitpython-developers/GitPython) | [3.1.29](https://pypi.org/project/GitPython/3.1.29/) | BSD License | Sebastian Thiel, Michael Trier | GitPython is a python library used to interact with Git repositories |
-<!--[[[end]]] (checksum: e254b2da944dbc29c8dfcbc0235bf779)-->
+| [GitPython](https://github.com/gitpython-developers/GitPython) | [3.1.30](https://pypi.org/project/GitPython/3.1.30/) | BSD License | Sebastian Thiel, Michael Trier | GitPython is a python library used to interact with Git repositories |
+<!--[[[end]]] (checksum: 4f2d680028b2c44561176506c5d13e29)-->
 
 ### Indirect Dependencies
 
@@ -38,8 +38,8 @@ Base graphviz file in dot format: [Trees of the direct dependencies](package-dep
 
 <!--[[[fill dependency_tree_console_text()]]]-->
 ````console
-GitPython==3.1.29
+GitPython==3.1.30
   - gitdb [required: >=4.0.1,<5, installed: 4.0.10]
     - smmap [required: >=3.0.1,<6, installed: 5.0.0]
 ````
-<!--[[[end]]] (checksum: b64b0362e3c6087ac8373ebc4e71e3f6)-->
+<!--[[[end]]] (checksum: ea1abf1b9bfcc6dc06232cdeb89d8075)-->
