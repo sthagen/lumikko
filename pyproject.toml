@@ -23,7 +23,7 @@ keywords = [
     "taxonomies",
 ]
 dependencies = [
-    "GitPython >= 3.1.30",
+    "GitPython >= 3.1.31",
     "markdown >= 3.4.1",
 ]
 requires-python = ">=3.9"
