@@ -1,7 +1,7 @@
 digraph {
-	gitpython [label="GitPython\n3.1.30"]
-	gitpython -> gitdb [label=">=4.0.1,<5"]
-	gitdb [label="gitdb\n4.0.10"]
 	gitdb -> smmap [label=">=3.0.1,<6"]
+	gitdb [label="gitdb\n4.0.10"]
+	gitpython -> gitdb [label=">=4.0.1,<5"]
+	gitpython [label="GitPython\n3.1.31"]
 	smmap [label="smmap\n5.0.0"]
 }

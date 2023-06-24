@@ -1,8 +1,8 @@
 # Third Party Dependencies
 
 <!--[[[fill sbom_sha256()]]]-->
-The [SBOM in CycloneDX v1.4 JSON format](https://git.sr.ht/~sthagen/lumikko/blob/default/sbom.json) with SHA256 checksum ([7c3b8e18 ...](https://git.sr.ht/~sthagen/lumikko/blob/default/sbom.json.sha256 "sha256:7c3b8e18fdd156adb1de0924643a4b1dbb0d6720cf7d1bfa52cefadec11a7ac3")).
-<!--[[[end]]] (checksum: 0698a63ea79c1a080080313bb5ff0f4e)-->
+The [SBOM in CycloneDX v1.4 JSON format](https://git.sr.ht/~sthagen/lumikko/blob/default/sbom/cdx.json) with SHA256 checksum ([27502e4e ...](https://git.sr.ht/~sthagen/lumikko/blob/default/sbom/cdx.json.sha256 "sha256:27502e4e3bcebe8b04ccae3f0bc3744bb673ff83845854c40fb3e19bf2cb8f0f")).
+<!--[[[end]]] (checksum: 94b8bf0d36c6228dd62b399baca3c223)-->
 ## Licenses 
 
 JSON files with complete license info of: [direct dependencies](direct-dependency-licenses.json) | [all dependencies](all-dependency-licenses.json)
@@ -12,8 +12,8 @@ JSON files with complete license info of: [direct dependencies](direct-dependenc
 <!--[[[fill direct_dependencies_table()]]]-->
 | Name                                                           | Version                                              | License     | Author                         | Description (from packaging data)                                    |
 |:---------------------------------------------------------------|:-----------------------------------------------------|:------------|:-------------------------------|:---------------------------------------------------------------------|
-| [GitPython](https://github.com/gitpython-developers/GitPython) | [3.1.30](https://pypi.org/project/GitPython/3.1.30/) | BSD License | Sebastian Thiel, Michael Trier | GitPython is a python library used to interact with Git repositories |
-<!--[[[end]]] (checksum: 4f2d680028b2c44561176506c5d13e29)-->
+| [GitPython](https://github.com/gitpython-developers/GitPython) | [3.1.31](https://pypi.org/project/GitPython/3.1.31/) | BSD License | Sebastian Thiel, Michael Trier | GitPython is a Python library used to interact with Git repositories |
+<!--[[[end]]] (checksum: 4e265a8914e625bf0c533fc7cf8e372a)-->
 
 ### Indirect Dependencies
 
@@ -38,8 +38,8 @@ Base graphviz file in dot format: [Trees of the direct dependencies](package-dep
 
 <!--[[[fill dependency_tree_console_text()]]]-->
 ````console
-GitPython==3.1.30
-  - gitdb [required: >=4.0.1,<5, installed: 4.0.10]
-    - smmap [required: >=3.0.1,<6, installed: 5.0.0]
+GitPython==3.1.31
+└── gitdb [required: >=4.0.1,<5, installed: 4.0.10]
+    └── smmap [required: >=3.0.1,<6, installed: 5.0.0]
 ````
-<!--[[[end]]] (checksum: ea1abf1b9bfcc6dc06232cdeb89d8075)-->
+<!--[[[end]]] (checksum: 8dbf329f56d5a4a92abae70144e3d439)-->
