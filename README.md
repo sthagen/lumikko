@@ -7,7 +7,7 @@ For now a lumikko (Finnish for wiesel), later maybe feed back changes upstream t
 Third party dependencies are documented in the folder [third-party](docs/third-party/README.md).
 
 [![version](https://img.shields.io/pypi/v/lumikko.svg?style=flat)](https://pypi.python.org/pypi/lumikko/)
-[![downloads](https://pepy.tech/badge/lumikko/month)](https://pepy.tech/project/lumikko)
+[![downloads](https://static.pepy.tech/badge/lumikko/month)](https://pepy.tech/project/lumikko)
 [![wheel](https://img.shields.io/pypi/wheel/lumikko.svg?style=flat)](https://pypi.python.org/pypi/lumikko/)
 [![supported-versions](https://img.shields.io/pypi/pyversions/lumikko.svg?style=flat)](https://pypi.python.org/pypi/lumikko/)
 [![supported-implementations](https://img.shields.io/pypi/implementation/lumikko.svg?style=flat)](https://pypi.python.org/pypi/lumikko/)
