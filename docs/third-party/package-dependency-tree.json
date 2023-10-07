@@ -2,8 +2,8 @@
     {
         "key": "gitpython",
         "package_name": "GitPython",
-        "installed_version": "3.1.32",
-        "required_version": "3.1.32",
+        "installed_version": "3.1.37",
+        "required_version": "3.1.37",
         "dependencies": [
             {
                 "key": "gitdb",
