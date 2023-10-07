@@ -3,7 +3,7 @@ SPDXID: "SPDXRef-DOCUMENT"
 spdxVersion: "SPDX-2.3"
 creationInfo:
   comment: "Converted from CycloneDX spec version 1.4"
-  created: "2023-08-16T06:28:38Z"
+  created: "2023-09-22T16:43:59Z"
   creators:
   - "Tool: CycloneDX:cyclonedx-bom-3.11.2"
   - "Tool: CycloneDX:cyclonedx-python-lib-3.1.5"
@@ -12,15 +12,15 @@ creationInfo:
 name: "SBOM-for-GitPython"
 dataLicense: "CC0-1.0"
 annotations:
-- annotationDate: "2023-08-16T06:28:40Z"
+- annotationDate: "2023-09-22T16:44:01Z"
   annotationType: "OTHER"
   annotator: "Tool: CycloneToSpdx"
   comment: "MISSING_CDX_PROPERTY:extensions={}"
-documentNamespace: "https://cyclonedx/56f845a2-a9f3-4bf3-8eeb-73db4f6cdb2d_1"
+documentNamespace: "https://cyclonedx/a8b01a61-af87-4cb4-b46d-d6cca197a0e4_1"
 packages:
-- SPDXID: "SPDXRef-2ff7cf08-0d89-43ba-8b2e-8e9490c75b11"
+- SPDXID: "SPDXRef-d860dcc9-c764-4d26-9fee-55281436a21a"
   annotations:
-  - annotationDate: "2023-08-16T06:28:40Z"
+  - annotationDate: "2023-09-22T16:44:01Z"
     annotationType: "OTHER"
     annotator: "Tool: CycloneToSpdx"
     comment: "MISSING_CDX_PROPERTY:componentType=\"LIBRARY\""
@@ -28,15 +28,15 @@ packages:
   downloadLocation: "NOASSERTION"
   externalRefs:
   - referenceCategory: "PACKAGE-MANAGER"
-    referenceLocator: "pkg:pypi/gitpython@3.1.32"
+    referenceLocator: "pkg:pypi/gitpython@3.1.37"
     referenceType: "purl"
   filesAnalyzed: false
   licenseConcluded: "NOASSERTION"
   licenseDeclared: "NOASSERTION"
   name: "GitPython"
   primaryPackagePurpose: "LIBRARY"
-  versionInfo: "3.1.32"
+  versionInfo: "3.1.37"
 relationships:
 - spdxElementId: "SPDXRef-DOCUMENT"
   relationshipType: "DESCRIBES"
-  relatedSpdxElement: "SPDXRef-2ff7cf08-0d89-43ba-8b2e-8e9490c75b11"
+  relatedSpdxElement: "SPDXRef-d860dcc9-c764-4d26-9fee-55281436a21a"

@@ -1,6 +1,6 @@
 SPDXVersion: SPDX-2.3
 DataLicense: CC0-1.0
-DocumentNamespace: https://cyclonedx/56f845a2-a9f3-4bf3-8eeb-73db4f6cdb2d_1
+DocumentNamespace: https://cyclonedx/a8b01a61-af87-4cb4-b46d-d6cca197a0e4_1
 DocumentName: SBOM-for-GitPython
 SPDXID: SPDXRef-DOCUMENT
 
@@ -8,34 +8,34 @@ SPDXID: SPDXRef-DOCUMENT
 Creator: Tool: CycloneDX:cyclonedx-bom-3.11.2
 Creator: Tool: CycloneDX:cyclonedx-python-lib-3.1.5
 Creator: Tool: CycloneToSpdx-0.1.4
-Created: 2023-08-16T06:28:38Z
+Created: 2023-09-22T16:43:59Z
 CreatorComment: <text>Converted from CycloneDX spec version 1.4</text>
 LicenseListVersion: 3.21
 ## Annotations
 Annotator: Tool: CycloneToSpdx
-AnnotationDate: 2023-08-16T06:28:39Z
+AnnotationDate: 2023-09-22T16:44:00Z
 AnnotationComment: <text>MISSING_CDX_PROPERTY:extensions={}</text>
 AnnotationType: OTHER
 SPDXREF: SPDXRef-DOCUMENT
 ## Relationships
-Relationship: SPDXRef-DOCUMENT DESCRIBES SPDXRef-2ff7cf08-0d89-43ba-8b2e-8e9490c75b11
+Relationship: SPDXRef-DOCUMENT DESCRIBES SPDXRef-d860dcc9-c764-4d26-9fee-55281436a21a
 
 ## Package Information
 PackageName: GitPython
-SPDXID: SPDXRef-2ff7cf08-0d89-43ba-8b2e-8e9490c75b11
-PackageVersion: 3.1.32
+SPDXID: SPDXRef-d860dcc9-c764-4d26-9fee-55281436a21a
+PackageVersion: 3.1.37
 PackageDownloadLocation: NOASSERTION
 PrimaryPackagePurpose: LIBRARY
 PackageLicenseConcluded: NOASSERTION
 PackageLicenseDeclared: NOASSERTION
 PackageCopyrightText: NOASSERTION
-ExternalRef: PACKAGE-MANAGER purl pkg:pypi/gitpython@3.1.32
+ExternalRef: PACKAGE-MANAGER purl pkg:pypi/gitpython@3.1.37
 ## Annotations
 Annotator: Tool: CycloneToSpdx
-AnnotationDate: 2023-08-16T06:28:39Z
+AnnotationDate: 2023-09-22T16:44:00Z
 AnnotationComment: <text>MISSING_CDX_PROPERTY:componentType="LIBRARY"</text>
 AnnotationType: OTHER
-SPDXREF: SPDXRef-2ff7cf08-0d89-43ba-8b2e-8e9490c75b11
+SPDXREF: SPDXRef-d860dcc9-c764-4d26-9fee-55281436a21a
 FilesAnalyzed: false
 
 
