@@ -2,7 +2,9 @@
 
 For now a lumikko (Finnish for wiesel), later maybe feed back changes upstream towards a lisko.
 
-[License: MIT](https://git.sr.ht/~sthagen/lumikko/tree/default/item/LICENSE)
+[License: MIT](https://git.sr.ht/~sthagen/lumikko/tree/default/item/LICENSE) |
+[Country of origin: Switzerland](https://git.sr.ht/~sthagen/lumikko/tree/default/item/COUNTRY-OF-ORIGIN) |
+[Export control classification number(ECCN): EAR99](https://git.sr.ht/~sthagen/lumikko/tree/default/item/EXPORT-CONTROL-CLASSIFICATION-NUMBER)
 
 Third party dependencies are documented in the folder [third-party](third-party/README.md).
 
