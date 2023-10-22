@@ -10,7 +10,7 @@ import json
 import lzma
 import os
 import pathlib
-import subprocess
+import subprocess  # nosec B404
 import sys
 
 from git import Repo
@@ -194,7 +194,7 @@ def mime_type(file_path):
     """Either yield mime type from find command without file name in result or arti/choke"""
     find_type = ['file', '--mime', file_path]
     try:
-        output = subprocess.check_output(find_type, stderr=subprocess.STDOUT).decode()
+        output = subprocess.check_output(find_type, stderr=subprocess.STDOUT).decode()  # nosec B603
         if not output.strip().endswith('(No such file or directory)'):
             return output.strip().split(':', 1)[1].strip()
     except subprocess.CalledProcessError:
