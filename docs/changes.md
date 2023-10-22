@@ -1,5 +1,8 @@
 # Changes
 
+2023.10.22
+:    * Changed repository structure and added about, security, and support info files
+
 2022.7.24
 :    * Bumped dependencies for development and test
 * Moved documentation to https://codes.dilettant.life/docs/lumikko
