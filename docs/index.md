@@ -8,9 +8,9 @@ For now a lumikko (Finnish for wiesel), later maybe feed back changes upstream t
 [![Configuration](badges/configuration-sbom.svg)](third-party/index.html)
 
 [![Version](https://img.shields.io/pypi/v/lumikko.svg?style=flat)](https://pypi.python.org/pypi/lumikko/)
-[![Downloads](docs/badges/downloads-per-month.svg)](https://pepy.tech/project/lumikko)
+[![Downloads](badges/downloads-per-month.svg)](https://pepy.tech/project/lumikko)
 [![Supported Versions](https://img.shields.io/pypi/pyversions/lumikko.svg?style=flat)](https://pypi.python.org/pypi/lumikko/)
-[![Maintenance Status](docs/badges/commits-per-year.svg)](https://git.sr.ht/~sthagen/lumikko/log)
+[![Maintenance Status](badges/commits-per-year.svg)](https://git.sr.ht/~sthagen/lumikko/log)
 
 ## Bug Tracker
 
