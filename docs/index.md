@@ -10,7 +10,7 @@ For now a lumikko (Finnish for wiesel), later maybe feed back changes upstream t
 [![Version](https://img.shields.io/pypi/v/lumikko.svg?style=flat)](https://pypi.python.org/pypi/lumikko/)
 [![Downloads](https://static.pepy.tech/badge/lumikko/month)](https://pepy.tech/project/lumikko)
 [![Supported Versions](https://img.shields.io/pypi/pyversions/lumikko.svg?style=flat)](https://pypi.python.org/pypi/lumikko/)
-[![Maintenance Status](https://img.shields.io/github/commit-activity/y/sthagen/lumikko.svg?style=flat)](https://git.sr.ht/~sthagen/lumikko/log)
+[![Maintenance Status](docs/badges/downloads-per-month.svg)](https://git.sr.ht/~sthagen/lumikko/log)
 
 ## Bug Tracker
 
