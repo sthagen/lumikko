@@ -7,7 +7,7 @@ For now a lumikko (Finnish for wiesel), later maybe feed back changes upstream t
 [![Export Classification Control Number (ECCN)](docs/badges/export-control-classification-number_eccn-ear99-neutral.svg)](https://git.sr.ht/~sthagen/lumikko/tree/default/item/EXPORT-CONTROL-CLASSIFICATION-NUMBER)
 [![Configuration](docs/badges/configuration-sbom.svg)](https://git.sr.ht/~sthagen/lumikko/tree/default/item/docs/third-party/README.md)
 
-[![Version](https://img.shields.io/pypi/v/lumikko.svg?style=flat)](https://pypi.python.org/pypi/lumikko/)
+[![Version](docs/badges/latest-release.svg)](https://pypi.python.org/pypi/lumikko/)
 [![Downloads](docs/badges/downloads-per-month.svg)](https://pepy.tech/project/lumikko)
 [![Supported Versions](https://img.shields.io/pypi/pyversions/lumikko.svg?style=flat)](https://pypi.python.org/pypi/lumikko/)
 [![Maintenance Status](docs/badges/commits-per-year.svg)](https://git.sr.ht/~sthagen/lumikko/log)
