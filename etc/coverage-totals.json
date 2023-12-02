@@ -1,7 +1,7 @@
 {
   "lumikko": {
-    "version": "7.3.2",
-    "timestamp": "2023-12-02T15:25:44.046912",
+    "coverage_tool_version": "7.3.2",
+    "timestamp": "2023-12-02 16:24:18 +00:00",
     "branch_coverage": true,
     "show_contexts": true,
     "covered_lines": 4,
@@ -13,6 +13,23 @@
     "num_branches": 115,
     "num_partial_branches": 0,
     "covered_branches": 2,
-    "missing_branches": 113
+    "missing_branches": 113,
+    "node_id": "c79891e5-aabf-3a83-95b9-588edcd8327f",
+    "nfiles": 4,
+    "files": [
+      "lumikko/__init__.py",
+      "lumikko/cli.py",
+      "lumikko/lumikko.py",
+      "lumikko/tree_shape.py"
+    ],
+    "blake3": "6089a1fef4564e47ef85abb9f781c7b8201b0d5d85119f1f6cc03ee69ef0ce5f",
+    "blake2": "f4a712c43afc2ba0470afdc716704f6e8700b9bd44614b3425b43c972a4c91b416fc578ea0b84fb24adf4c9d16cd031bbf890812bd626e06c38eaf3dd922b606",
+    "sha512": "041274c5be13283c1bb36c7cd2d6b787d560b2c225d50fc98c67150a2f154a8277fae118ba9a7fca896fe32c68ccaae4cc8d04ff794ac9d13da11e6543dece8f",
+    "sha384": "17cf45d00f561ff8a4a502f42b5189976922d2475ee2a6833241eb0828929257c103a126d2f6fd1054a06377d2719fa1",
+    "sha256": "b5c0e221017bb17b14fe28a55865924b79cbe3aadd22dd546ba86850714830be",
+    "sha1": "0100143cfbe493cf161c72bce530bc7e05c43162",
+    "md5": "7d374c592e3c530ad5f22b0c7df390e1",
+    "python_version": "3.10.12",
+    "entropy": 4.959502
   }
 }
