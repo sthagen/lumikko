@@ -7,6 +7,7 @@ name = "lumikko"
 version = "2023.10.22"
 description = "For now a lumikko (Finnish for wiesel), later maybe feed back changes upstream towards a lisko."
 readme = "README.md"
+license = {file = "LICENSE"}
 authors = [{ name = "Stefan Hagen", email = "stefan@hagen.link" }]
 maintainers = [{ name = "Stefan Hagen", email = "stefan@hagen.link" }]
 classifiers = [
